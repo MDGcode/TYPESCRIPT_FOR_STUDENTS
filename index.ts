@@ -1,15 +1,10 @@
-enum HTTP_METHOD {
-  GET = "GET",
-  POST = "POST",
-}
+type HTTP_METHOD = "GET" | "POST";
 
-enum HTTP_STATUS {
-  OK = 200,
-  INTERNAL_SERVER_ERROR = 500,
-}
+type Role = "admin" | "user";
 
+type HTTP_STATUS = 200 | 500;
 interface ResponseResult {
-  status: number;
+  status: HTTP_STATUS;
 }
 
 interface ObserverHandlers {
@@ -21,13 +16,13 @@ interface ObserverHandlers {
 interface UserMock {
   name: string;
   age: number;
-  roles: string[];
+  roles: Role[];
   createdAt: Date;
   isDeleted: boolean;
 }
 
 interface RequestMock {
-  method: string;
+  method: HTTP_METHOD;
   host: string;
   path: string;
   body?: UserMock;
@@ -121,14 +116,14 @@ const userMock: UserMock = {
 
 const requestsMock: Array<RequestMock> = [
   {
-    method: HTTP_METHOD.POST,
+    method: "POST",
     host: "service.example",
     path: "user",
     body: userMock,
     params: {},
   },
   {
-    method: HTTP_METHOD.GET,
+    method: "GET",
     host: "service.example",
     path: "user",
     params: {
@@ -137,13 +132,13 @@ const requestsMock: Array<RequestMock> = [
   },
 ];
 
-const handleRequest = (request: RequestMock) => {
+const handleRequest = (request: RequestMock): ResponseResult => {
   // handling of request
-  return { status: HTTP_STATUS.OK };
+  return { status: 200 };
 };
-const handleError = (error: Error) => {
+const handleError = (error: Error): ResponseResult => {
   // handling of error
-  return { status: HTTP_STATUS.INTERNAL_SERVER_ERROR };
+  return { status: 500 };
 };
 
 const handleComplete = () => console.log("complete");
